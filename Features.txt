@@ -1,0 +1,12 @@
+Features included:
+	•	Battery voltage, percentage, and current.
+	•	AC/DC voltage and current.
+	•	Load current, power usage, CPU temperature.
+	•	Charge status derived from AC power state and battery.
+	•	LED display with 4 lines, dimmed inactive LEDs, color-coded.
+	•	Time tracking: total AC, cumulative battery, last battery session.
+	•	Cumulative energy and estimated runtime.
+	•	Refresh every 10 seconds, clears terminal.
+	•	Main loop with KeyboardInterrupt support to quit.
+	•	Docstrings and comments included for all functions for clarity.
+	•	Ready to run in Python 3.
