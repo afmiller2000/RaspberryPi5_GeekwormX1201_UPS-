@@ -5,8 +5,7 @@ Features List
 
 I. Comprehensive Power Monitoring
 	•	AC Input Monitoring
-	•	Input Voltage (
- continuously measured
+	•	Input Voltage (continuously measured
 	•	Input Current (A) – monitored and reported
 	•	Input Power (W) – calculated and displayed
 	•	AC Power State – presence/absence detection
