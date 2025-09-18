@@ -1,5 +1,5 @@
-# RaspberryPi 5 Geekworm X1201 UPS Monitoring Scripts
-RaspberryPi5 Geekworm X1201 UPS Hardware and config.txt file settings 
+Geekworm x1201 v1.1 UPS Monitoring and 
+Management Scripts for Raspberry Pi 5 / Linux 
 
 Features List
 
