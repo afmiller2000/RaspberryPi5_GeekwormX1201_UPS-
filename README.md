@@ -1,103 +1,159 @@
-Geekworm x1201 v1.1 UPS Monitoring and 
-Management Scripts for Raspberry Pi 5 / Linux 
+# Raspberry Pi Geekworm X1201 UPS Monitor
 
-Features List
+A comprehensive monitoring and management system for the Geekworm X1201 UPS on Raspberry Pi 5 and other Linux distributions.
 
-I. Comprehensive Power Monitoring
-	•	AC Input Monitoring
-	•	Input Voltage (
- continuously measured
-	•	Input Current (A) – monitored and reported
-	•	Input Power (W) – calculated and displayed
-	•	AC Power State – presence/absence detection
-	•	DC Output Monitoring
-	•	Output Voltage (V) – monitored at UPS to Raspberry Pi
-	•	Output Current (A) – tracked for load demand
-	•	Output Power (W) – calculated and reported
-	•	Brownout/Undervoltage Alerts – triggers if below safe thresholds
-	•	Battery Monitoring
-	•	Pack Voltage (V) – live reporting
-	•	Charge/Discharge Current (A) – direction and magnitude
-	•	Remaining Capacity (%) – via calibration table or fuel gauge
-	•	Bank Support – one or two batteries, with automatic detection
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![Raspberry Pi](https://img.shields.io/badge/Raspberry%20Pi-4%2B-red.svg)](https://www.raspberrypi.org/)
 
-⸻
+## 🚀 Quick Start
 
-II. LED Battery Visualization
-	•	Always-Visible LED Chart
-	•	4 rows displayed at all times for consistency
-	•	Bright LED = active, Dim LED = inactive
-	•	Capacity Mapping Table
-	•	76–100% → 4 LEDs lit
-	•	51–75% → 3 LEDs lit
-	•	26–50% → 2 LEDs lit
-	•	5–25% → 1 LED lit
-	•	<5% → Critical Warning (blinking or highlighted)
-	•	Quick Reference Status
-	•	GOOD – system on AC, battery healthy
-	•	CHARGING – battery charging from AC
-	•	DISCHARGING – running on battery
-	•	CRITICAL – low battery state, shutdown imminent
-	•	UNKNOWN – no battery detected or invalid state
+```bash
+# Clone the repository
+git clone https://github.com/afmiller2000/RaspberryPi5_GeekwormX1201_UPS-.git
+cd RaspberryPi5_GeekwormX1201_UPS-
 
-⸻
+# Install dependencies
+pip install -r requirements.txt
 
-III. Advanced Analytics
-	•	Runtime Estimation
-	•	Calculates estimated minutes of operation under load
-	•	Uses load averages and calibrated discharge profiles
-	•	Power Smoothing
-	•	Exponential moving averages for stable real-time readings
-	•	Calibration Profiles
-	•	Voltage-to-percentage mapping by chemistry (per bank)
-	•	Guided calibration routine for full charge/discharge
+# Run the monitor
+python src/cli.py --monitor
+```
 
-⸻
+## 📁 Repository Structure
 
-IV. Event Logging & Diagnostics
-	•	System Log Capture
-	•	journalctl (current and previous boots)
-	•	dmesg (kernel buffer)
-	•	/var/log/syslog tail
-	•	UPS Event Logs
-	•	AC ↔ DC transitions
-	•	Low battery warnings
-	•	Undervoltage detections
-	•	Diagnostic Snapshots
-	•	JSON export of live sensor data for reporting and GitHub issues
-	•	Boot splash/plymouth log integration (optional)
+```
+RaspberryPi5_GeekwormX1201_UPS-/
+├── README.md                    # This file
+├── CONTRIBUTING.md              # Contribution guidelines
+├── CODE_OF_CONDUCT.md          # Community standards
+├── LICENSE                      # MIT License
+├── requirements.txt             # Python dependencies
+├── .gitignore                  # Git ignore patterns
+│
+├── .github/                    # GitHub configuration
+│   ├── ISSUE_TEMPLATE/         # Bug reports & feature requests
+│   ├── PULL_REQUEST_TEMPLATE.md # PR checklist
+│   ├── workflows/ci.yml        # GitHub Actions CI/CD
+│   └── labels.yml              # Issue/PR labels
+│
+├── docs/                       # Documentation
+│   ├── getting_started.md      # Setup and installation guide
+│   ├── calibration_guide.md    # Battery calibration procedures
+│   ├── troubleshooting.md      # Common issues and solutions
+│   ├── roadmap.md              # Project roadmap
+│   ├── screenshots/            # UI screenshots
+│   └── specs/                  # Technical specifications
+│       ├── ANSI_Colors.md      # Color coding reference
+│       ├── Battery_Profiles.md # Battery configuration specs
+│       ├── Calibration_Guide.md # Technical calibration details
+│       ├── Display_Policy.md   # LED display rules
+│       └── Event_Counters.md   # Event tracking specifications
+│
+├── config/                     # Configuration files
+│   ├── led_mapping.yaml        # LED display configuration
+│   ├── battery_profiles.yaml   # Battery type profiles
+│   └── hardware_calibration.yaml # Hardware calibration data
+│
+├── src/                        # Source code
+│   ├── __init__.py
+│   ├── cli.py                  # Command-line interface
+│   └── monitor/                # Core monitoring modules
+│       ├── __init__.py
+│       ├── sensors.py          # Sensor data collection
+│       ├── analytics.py        # Data analysis and calculations
+│       ├── led.py              # LED display management
+│       ├── runtime.py          # Runtime estimation
+│       ├── logger.py           # Event logging system
+│       └── safeops.py          # Safety operations
+│
+├── scripts/                    # Utility scripts
+│   ├── i2c_scan.sh            # I2C device detection
+│   ├── gpio_check.sh          # GPIO pin testing
+│   ├── quickref.md            # Quick reference guide
+│   └── ups1.sh                # UPS control script
+│
+├── tests/                      # Test suite
+│   ├── test_sensors.py        # Sensor module tests
+│   └── test_led.py            # LED module tests
+│
+├── service/                    # System service files
+│   ├── ups-monitor.service    # systemd service configuration
+│   └── docker-compose.yml     # Docker deployment
+│
+├── deploy/                     # Deployment configurations
+│   ├── Dockerfile             # Container image definition
+│   └── systemd/               # systemd service files
+│       └── upsmonitor.service
+│
+└── data/                      # Runtime data
+    ├── logs/                  # Application logs
+    └── snapshots/             # Diagnostic snapshots
+```
 
-⸻
+## ✨ Features
 
-V. Reliability & Safety Protocols
-	•	Secure Command Execution
-	•	All hardware/system commands require sudo
-	•	UUID/device verification required before formatting
-	•	Data Protection
-	•	rsync --dry-run enforced before copy/move operations
-	•	System Integrity
-	•	Automatic regeneration of GRUB after partition changes
-	•	Documentation update triggers alongside system updates
+### I. Comprehensive Power Monitoring
+- **AC Input Monitoring**: Voltage, current, power, and state detection
+- **DC Output Monitoring**: Output voltage, current, power with undervoltage alerts
+- **Battery Monitoring**: Pack voltage, charge/discharge current, remaining capacity
+- **Multi-Bank Support**: Automatic detection of single or dual battery configurations
 
-⸻
+### II. LED Battery Visualization
+- **Always-Visible LED Chart**: 4-row display showing battery status
+- **Capacity Mapping**: 76–100% (4 LEDs), 51–75% (3 LEDs), 26–50% (2 LEDs), 5–25% (1 LED), <5% (Critical)
+- **Status Indicators**: GOOD, CHARGING, DISCHARGING, CRITICAL, UNKNOWN states
 
-VI. Integration & Extensibility
-	•	Cross-Platform Compatibility
-	•	Raspberry Pi OS, Ubuntu, MX Linux, and future distributions
-	•	Data Sharing
-	•	Unified /mnt/data partition structure for documents/configs across OSes
-	•	Service Integration
-	•	Optional systemd service for 24/7 monitoring
-	•	Scalability
-	•	Ready for GUI extensions (tray widgets, panels)
-	•	Future Docker/Kubernetes integration for sandboxed deployments
+### III. Advanced Analytics
+- **Runtime Estimation**: Load-based operational time calculations
+- **Power Smoothing**: Exponential moving averages for stable readings
+- **Calibration Profiles**: Voltage-to-percentage mapping by battery chemistry
 
-⸻
+### IV. Event Logging & Diagnostics
+- **System Log Integration**: journalctl, dmesg, syslog capture
+- **UPS Event Tracking**: AC/DC transitions, battery warnings, fault detection
+- **Diagnostic Snapshots**: JSON export for issue reporting
 
-VII. Documentation & User Experience
-	•	Embedded Legends
-	•	ANSI color chart and LED thresholds always displayed in UI
-	•	Professional Documentation
-	•	Full README with screenshots, calibration guides, and troubleshooting steps
-	•	Open Roadmap
-	•	Transparent roadmap and contribution guidelines
+### V. Safety & Reliability
+- **Secure Operations**: Sudo requirements for hardware commands
+- **Data Protection**: Dry-run enforcement for critical operations
+- **System Integrity**: Automatic system updates and documentation sync
+
+### VI. Integration & Extensibility
+- **Cross-Platform**: Raspberry Pi OS, Ubuntu, MX Linux support
+- **Service Integration**: systemd service for 24/7 monitoring
+- **Scalability**: Ready for GUI extensions and containerization
+
+## 🔧 Hardware Requirements
+
+- Raspberry Pi 4B or 5 (recommended)
+- Geekworm X1201 UPS HAT v1.1 or newer
+- MicroSD card (32GB+ recommended)
+- I2C enabled on Raspberry Pi
+
+## 📖 Documentation
+
+- **[Getting Started](docs/getting_started.md)** - Setup and installation
+- **[Calibration Guide](docs/calibration_guide.md)** - Battery calibration procedures
+- **[Troubleshooting](docs/troubleshooting.md)** - Common issues and solutions
+- **[Project Roadmap](docs/roadmap.md)** - Future development plans
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Geekworm for the X1201 UPS hardware design
+- Raspberry Pi Foundation for the excellent platform
+- The open-source community for inspiration and support
