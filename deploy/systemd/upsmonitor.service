@@ -1,0 +1,66 @@
+# Alternative systemd service file for deployment
+# Use this version for production deployments
+
+[Unit]
+Description=UPS Monitor for Geekworm X1201
+Documentation=https://github.com/afmiller2000/RaspberryPi5_GeekwormX1201_UPS-
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=upsmonitor
+Group=upsmonitor
+WorkingDirectory=/opt/ups-monitor
+ExecStart=/opt/ups-monitor/venv/bin/python src/cli.py --monitor --interval 5
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=upsmonitor
+
+# Performance and resource settings
+Nice=0
+IOSchedulingClass=2
+IOSchedulingPriority=4
+CPUSchedulingPolicy=0
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+MemoryLimit=256M
+
+# Security hardening
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/ups-monitor/data /var/log/ups-monitor
+PrivateTmp=yes
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+RemoveIPC=yes
+RestrictNamespaces=yes
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+
+# Hardware access
+SupplementaryGroups=i2c gpio
+DeviceAllow=/dev/i2c-1 rw
+DeviceAllow=/dev/gpiomem rw
+DevicePolicy=closed
+
+# Environment
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONPATH=/opt/ups-monitor/src
+Environment=HOME=/opt/ups-monitor
+
+# Watchdog
+WatchdogSec=60
+
+[Install]
+WantedBy=multi-user.target

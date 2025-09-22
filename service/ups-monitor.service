@@ -1,0 +1,46 @@
+[Unit]
+Description=Raspberry Pi Geekworm X1201 UPS Monitor
+Documentation=https://github.com/afmiller2000/RaspberryPi5_GeekwormX1201_UPS-
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/RaspberryPi5_GeekwormX1201_UPS-
+ExecStart=/home/pi/RaspberryPi5_GeekwormX1201_UPS-/venv/bin/python src/cli.py --monitor --interval 5
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ups-monitor
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+# Security settings
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/home/pi/RaspberryPi5_GeekwormX1201_UPS-/data
+PrivateTmp=yes
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+
+# Allow access to I2C and GPIO
+SupplementaryGroups=i2c gpio
+DeviceAllow=/dev/i2c-1 rw
+DeviceAllow=/dev/gpiomem rw
+
+# Environment
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONPATH=/home/pi/RaspberryPi5_GeekwormX1201_UPS-/src
+
+[Install]
+WantedBy=multi-user.target
