@@ -1,0 +1,289 @@
+# Hardware Calibration Configuration
+# Contains calibration data and hardware-specific adjustments
+
+# System Information
+system_info:
+  raspberry_pi_model: "Pi 5"
+  ups_model: "Geekworm X1201"
+  ups_version: "v1.1"
+  calibration_date: "2025-01-15T10:30:00Z"
+  calibrated_by: "system"
+  calibration_version: "1.0"
+
+# I2C Configuration
+i2c_config:
+  bus_number: 1
+  ups_address: 0x36
+  scan_addresses: [0x36, 0x17]  # Primary and alternative addresses
+  communication_speed: 100000   # 100kHz
+  retry_count: 3
+  timeout_ms: 1000
+
+# Battery Configuration
+battery_config:
+  # Selected battery profile
+  profile: "18650_standard"
+  
+  # Physical configuration
+  battery_count: 1
+  configuration: "single"  # single, parallel, series
+  
+  # Actual measured capacity (if different from profile)
+  measured_capacity_mah: null
+  
+  # Custom name/identifier
+  battery_identifier: "Samsung INR18650-25R"
+  
+  # Installation date
+  install_date: "2025-01-15"
+
+# Voltage Calibration
+voltage_calibration:
+  # ADC reference voltage (measured)
+  reference_voltage: 3.300
+  
+  # Voltage divider ratio (if applicable)
+  voltage_divider_ratio: 1.0
+  
+  # Calibration offset (applied to all readings)
+  offset_volts: 0.0
+  
+  # Gain correction factor
+  gain_factor: 1.0
+  
+  # Multi-point calibration (if performed)
+  calibration_points: []
+  # Example format:
+  # - measured_voltage: 4.200
+  #   actual_voltage: 4.195
+  # - measured_voltage: 3.700
+  #   actual_voltage: 3.705
+
+# Current Calibration
+current_calibration:
+  # Current sense resistor value (ohms)
+  sense_resistor: 0.010  # 10mΩ
+  
+  # Amplifier gain
+  amplifier_gain: 50.0
+  
+  # Offset current (zero reading offset)
+  offset_amps: 0.0
+  
+  # Gain correction factor
+  gain_factor: 1.0
+  
+  # Direction detection (if supported)
+  supports_bidirectional: true
+  
+  # Calibration points
+  calibration_points: []
+
+# Temperature Calibration
+temperature_calibration:
+  # Temperature sensor type
+  sensor_type: "NTC"  # NTC, linear, built-in
+  
+  # Calibration offset
+  offset_celsius: 0.0
+  
+  # Gain factor
+  gain_factor: 1.0
+  
+  # Reference points
+  calibration_points: []
+
+# GPIO Configuration (if applicable)
+gpio_config:
+  # LED control pins
+  led_pins:
+    LED1: 16
+    LED2: 20
+    LED3: 21
+    LED4: 26
+    
+  # LED polarity (true = active high, false = active low)
+  led_active_high: true
+  
+  # Power control pins
+  power_pins:
+    shutdown_signal: 18
+    power_button: 19
+    
+  # Pin configuration
+  pin_config:
+    mode: "BCM"  # BCM or BOARD numbering
+    initial_state: "low"
+
+# Measurement Timing
+timing_config:
+  # Sensor reading intervals (seconds)
+  voltage_interval: 1.0
+  current_interval: 1.0
+  temperature_interval: 5.0
+  
+  # Averaging parameters
+  voltage_averaging: 5     # Average over 5 readings
+  current_averaging: 10    # Average over 10 readings
+  temperature_averaging: 3 # Average over 3 readings
+  
+  # Settling time after measurement start (ms)
+  settling_time_ms: 100
+
+# Safety Thresholds (Override profile defaults if needed)
+safety_thresholds:
+  # Voltage limits (per cell)
+  max_cell_voltage: null    # Use profile default
+  min_cell_voltage: null    # Use profile default
+  
+  # Current limits
+  max_discharge_current: null  # Use profile default
+  max_charge_current: null     # Use profile default
+  
+  # Temperature limits
+  max_temperature: null     # Use profile default
+  min_temperature: -10.0    # Minimum operating temperature
+  
+  # Critical shutdown thresholds
+  critical_voltage_shutdown: 2.8   # Per cell
+  critical_temperature_shutdown: 65.0
+
+# Calibration Quality Metrics
+calibration_quality:
+  voltage_accuracy: null    # ±mV (filled after calibration)
+  current_accuracy: null    # ±mA (filled after calibration)
+  temperature_accuracy: null # ±°C (filled after calibration)
+  
+  # Overall calibration grade
+  grade: null  # EXCELLENT, GOOD, ACCEPTABLE, POOR
+  
+  # Confidence level (0.0-1.0)
+  confidence: null
+  
+  # Number of calibration points used
+  calibration_points_count: 0
+  
+  # Calibration duration
+  calibration_duration_hours: null
+
+# Environmental Conditions During Calibration
+calibration_environment:
+  ambient_temperature: null
+  humidity: null
+  atmospheric_pressure: null
+  
+  # Stability conditions
+  temperature_stability: null  # ±°C variation during calibration
+  voltage_stability: null      # ±mV variation in reference
+
+# Hardware-Specific Adjustments
+hardware_adjustments:
+  # UPS HAT specific corrections
+  ups_hat_corrections:
+    # Known hardware revision issues
+    revision_specific: []
+    
+    # Component tolerances
+    component_tolerances:
+      resistor_tolerance: 0.01  # 1%
+      capacitor_tolerance: 0.05 # 5%
+      
+  # Raspberry Pi specific adjustments
+  pi_specific:
+    # GPIO voltage levels
+    gpio_logic_high: 3.3
+    gpio_logic_low: 0.0
+    
+    # I2C pull-up configuration
+    i2c_pullup_enabled: true
+    
+    # Power supply considerations
+    supply_voltage_nominal: 5.0
+
+# Advanced Calibration Features
+advanced_calibration:
+  # Multi-point polynomial fitting
+  polynomial_fitting:
+    enabled: false
+    degree: 3
+    
+  # Temperature compensation calibration
+  temperature_compensation:
+    enabled: false
+    temperature_points: []
+    
+  # Load-dependent calibration
+  load_dependent:
+    enabled: false
+    load_points: []
+  
+  # Aging compensation
+  aging_compensation:
+    enabled: false
+    baseline_date: null
+    degradation_model: "linear"
+
+# Calibration History
+calibration_history:
+  # Previous calibrations
+  history: []
+  # Example entry:
+  # - date: "2025-01-01T12:00:00Z"
+  #   version: "0.9"
+  #   grade: "GOOD"
+  #   notes: "Initial calibration"
+  
+  # Calibration schedule
+  next_calibration_due: null
+  calibration_interval_months: 6
+  
+  # Maintenance flags
+  maintenance_required: false
+  recalibration_recommended: false
+
+# Validation Settings
+validation:
+  # Automatic validation tests
+  auto_validation: true
+  
+  # Validation thresholds
+  voltage_tolerance: 0.05    # ±50mV
+  current_tolerance: 0.1     # ±100mA
+  temperature_tolerance: 2.0 # ±2°C
+  
+  # Validation frequency
+  validation_interval_hours: 24
+  
+  # Validation failure actions
+  on_validation_failure:
+    log_error: true
+    disable_affected_sensor: false
+    trigger_recalibration: false
+
+# Backup and Recovery
+backup:
+  # Backup previous calibration before updating
+  backup_on_update: true
+  
+  # Maximum number of backups to keep
+  max_backups: 5
+  
+  # Backup location
+  backup_directory: "data/calibration_backups/"
+  
+  # Auto-restore on validation failure
+  auto_restore_on_failure: false
+
+# Export and Import
+data_exchange:
+  # Export format version
+  export_format_version: "1.0"
+  
+  # Include sensitive data in exports
+  include_hardware_serials: false
+  
+  # Validation of imported calibrations
+  validate_imports: true
+  
+  # Checksum verification
+  verify_checksums: true

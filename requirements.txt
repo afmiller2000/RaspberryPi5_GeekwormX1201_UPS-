@@ -1,0 +1,10 @@
+# Requirements for Raspberry Pi Geekworm X1201 UPS Monitor
+# Hardware communication dependencies
+smbus2>=0.4.2
+RPi.GPIO>=0.7.1
+
+# Testing framework
+pytest>=7.4.0
+
+# Configuration file handling
+pyyaml>=6.0

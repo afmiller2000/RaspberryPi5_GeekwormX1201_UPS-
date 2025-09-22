@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  ups-monitor:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: ups-monitor
+    restart: unless-stopped
+    
+    # Device access for I2C and GPIO
+    devices:
+      - "/dev/i2c-1:/dev/i2c-1"
+      - "/dev/gpiomem:/dev/gpiomem"
+    
+    # Privileged mode for hardware access (use carefully)
+    privileged: false
+    
+    # Volume mounts for data persistence
+    volumes:
+      - ./data:/home/app/data
+      - ./config:/home/app/config:ro
+    
+    # Environment variables
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TZ=UTC
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+        reservations:
+          memory: 64M
+          cpus: '0.1'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "src/cli.py", "--status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Optional: Log aggregation service
+  # Uncomment if you want centralized logging
+  # fluentd:
+  #   image: fluentd:v1.14-debian-1
+  #   volumes:
+  #     - ./logs:/fluentd/log
+  #     - ./fluentd.conf:/fluentd/etc/fluent.conf:ro
+  #   depends_on:
+  #     - ups-monitor
+
+# Optional: Networks for service isolation
+# networks:
+#   ups-network:
+#     driver: bridge

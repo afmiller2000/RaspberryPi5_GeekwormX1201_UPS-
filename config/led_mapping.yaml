@@ -1,0 +1,218 @@
+# LED Mapping Configuration for Geekworm X1201 UPS
+# This file defines how LEDs are mapped to battery levels and system states
+
+# Hardware LED Configuration
+hardware_leds:
+  # GPIO pins for LED control (if software controlled)
+  led_pins:
+    LED1: 16    # GPIO 16 - Low battery indicator
+    LED2: 20    # GPIO 20 - Medium battery indicator  
+    LED3: 21    # GPIO 21 - High battery indicator
+    LED4: 26    # GPIO 26 - Full battery indicator
+  
+  # LED states
+  states:
+    OFF: 0
+    ON: 1
+    BLINK_SLOW: 2
+    BLINK_FAST: 3
+    PULSE: 4
+
+# Battery Level to LED Mapping
+battery_levels:
+  # Critical battery level (0-5%)
+  critical:
+    range: [0, 5]
+    pattern:
+      LED1: BLINK_FAST
+      LED2: OFF
+      LED3: OFF
+      LED4: OFF
+    color: RED
+    priority: CRITICAL
+    
+  # Low battery level (6-25%)
+  low:
+    range: [6, 25]
+    pattern:
+      LED1: ON
+      LED2: OFF
+      LED3: OFF
+      LED4: OFF
+    color: RED
+    priority: WARNING
+    
+  # Medium battery level (26-50%)
+  medium:
+    range: [26, 50]
+    pattern:
+      LED1: ON
+      LED2: ON
+      LED3: OFF
+      LED4: OFF
+    color: YELLOW
+    priority: NORMAL
+    
+  # High battery level (51-75%)
+  high:
+    range: [51, 75]
+    pattern:
+      LED1: ON
+      LED2: ON
+      LED3: ON
+      LED4: OFF
+    color: GREEN
+    priority: NORMAL
+    
+  # Full battery level (76-100%)
+  full:
+    range: [76, 100]
+    pattern:
+      LED1: ON
+      LED2: ON
+      LED3: ON
+      LED4: ON
+    color: GREEN
+    priority: NORMAL
+
+# Power Status LED Overrides
+power_status:
+  # On AC power with battery charging
+  charging:
+    pattern_modifier: PULSE  # Make active LEDs pulse
+    color_override: CYAN
+    
+  # Running on battery power
+  battery_power:
+    pattern_modifier: BLINK_SLOW  # Make highest LED blink
+    color_override: ORANGE
+    
+  # AC power restored, battery full
+  ac_power_full:
+    pattern:
+      LED1: ON
+      LED2: ON
+      LED3: ON
+      LED4: ON
+    color: BLUE
+
+# System Status Indicators
+system_status:
+  # System fault condition
+  fault:
+    pattern:
+      LED1: BLINK_FAST
+      LED2: OFF
+      LED3: BLINK_FAST
+      LED4: OFF
+    color: RED
+    priority: CRITICAL
+    
+  # High temperature warning
+  temperature_warning:
+    pattern_modifier: BLINK_SLOW  # All active LEDs blink
+    color_overlay: YELLOW
+    
+  # I2C communication error
+  comm_error:
+    pattern:
+      LED1: BLINK_SLOW
+      LED2: BLINK_SLOW
+      LED3: BLINK_SLOW
+      LED4: BLINK_SLOW
+    color: PURPLE
+    priority: ERROR
+
+# Display Timing Configuration
+timing:
+  # Blink timing in milliseconds
+  blink_slow:
+    on_duration: 1000
+    off_duration: 1000
+    
+  blink_fast:
+    on_duration: 125
+    off_duration: 125
+    
+  pulse:
+    period: 2000
+    duty_cycle: 0.5
+    
+  # Update rates
+  refresh_rate: 100  # 100ms refresh rate
+  battery_update: 5000  # Update battery status every 5 seconds
+  status_update: 1000   # Update system status every second
+
+# Terminal Display Configuration
+terminal_display:
+  # Symbols for different LED states
+  symbols:
+    ON: "●"           # Filled circle
+    OFF: "○"          # Empty circle
+    BLINK_SLOW: "◐"   # Half-filled circle
+    BLINK_FAST: "◑"   # Quarter-filled circle
+    PULSE: "◒"        # Three-quarter circle
+    
+  # Color mapping for terminal output
+  colors:
+    RED: "\033[31m"
+    GREEN: "\033[32m"
+    YELLOW: "\033[33m"
+    BLUE: "\033[34m"
+    ORANGE: "\033[38;5;208m"
+    CYAN: "\033[36m"
+    PURPLE: "\033[35m"
+    WHITE: "\033[37m"
+    RESET: "\033[0m"
+    
+  # Layout configuration
+  layout:
+    vertical: true    # Display LEDs vertically
+    show_labels: true # Show LED1, LED2, etc. labels
+    show_percentage: true  # Show percentage next to LEDs
+    width: 20         # Width of percentage bar
+
+# Accessibility Options
+accessibility:
+  # High contrast mode
+  high_contrast:
+    enabled: false
+    colors:
+      critical: "\033[97m\033[41m"  # White on red
+      warning: "\033[30m\033[43m"   # Black on yellow
+      normal: "\033[30m\033[42m"    # Black on green
+      
+  # Colorblind support
+  colorblind_friendly:
+    enabled: false
+    use_symbols: true
+    symbol_mapping:
+      critical: "⚠"
+      warning: "▼"
+      normal: "●"
+      good: "✓"
+      
+  # Audio alerts (if supported)
+  audio_alerts:
+    enabled: false
+    critical_beep: true
+    warning_tone: false
+
+# Advanced Configuration
+advanced:
+  # LED brightness (0-100%)
+  brightness: 80
+  
+  # Enable software PWM for brightness control
+  software_pwm: false
+  
+  # LED test mode
+  test_mode:
+    enabled: false
+    sequence_delay: 500  # ms between LED tests
+    
+  # Override hardware control
+  software_control: false
+  
+  # Battery level hysteresis to prevent flickering
+  hysteresis: 2  # 2% hysteresis between levels
