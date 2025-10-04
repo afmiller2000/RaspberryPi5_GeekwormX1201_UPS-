@@ -101,3 +101,13 @@ VII. Documentation & User Experience
 	•	Full README with screenshots, calibration guides, and troubleshooting steps
 	•	Open Roadmap
 	•	Transparent roadmap and contribution guidelines
+
+⸻
+
+## 📖 Documentation
+
+### Quick Links
+- **[GRUB Bootloader Setup Guide](docs/GRUB_SETUP_GUIDE.md)** - Comprehensive guide for setting up GRUB as the main firmware bootloader on Raspberry Pi 5
+- **[Quick Start Guide](QUICKSTART.MD)** - Get started with GitHub and basic setup
+- **[Repository Structure](REPO_MAP.md)** - Overview of project organization
+- **[Early Design Ideas](docs/early_design_ideas.md)** - Project planning and architecture decisions

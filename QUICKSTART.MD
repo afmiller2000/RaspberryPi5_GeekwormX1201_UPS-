@@ -70,6 +70,7 @@ cd RaspberryPi5_GeekwormX1201_UPS-
 - [Create a new file on GitHub](https://github.com/afmiller2000/RaspberryPi5_GeekwormX1201_UPS-/new/main)
 - [Upload files via the web](https://github.com/afmiller2000/RaspberryPi5_GeekwormX1201_UPS-/upload/main)
 - [Edit README directly](https://github.com/afmiller2000/RaspberryPi5_GeekwormX1201_UPS-/edit/main/README.md)
+- **[GRUB Bootloader Setup Guide](docs/GRUB_SETUP_GUIDE.md)** - Multi-OS boot configuration for Raspberry Pi 5
 
 ---
 
