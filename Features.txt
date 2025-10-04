@@ -98,6 +98,6 @@ VII. Documentation & User Experience
 	•	ANSI color chart and LED thresholds always displayed in UI
 	•	Professional Documentation
 	•	Full README with screenshots, calibration guides, and troubleshooting steps
+	•	GRUB bootloader setup guide for multi-OS configurations
 	•	Open Roadmap
 	•	Transparent roadmap and contribution guidelines
-
